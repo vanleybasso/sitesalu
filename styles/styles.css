@@ -930,13 +930,23 @@ footer {
   box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
 
-/* Avaliação por estrelas */
-.rating {
-  color: #FFD700;
+/* ==================== */
+/* CORREÇÕES PARA DEPOIMENTOS */
+/* ==================== */
+
+/* Estrelas roxas nos depoimentos */
+.testimonials .rating {
+  color: var(--primary-color); /* Agora usa a cor roxa do tema */
   margin-bottom: 20px;
   font-size: 1.1rem;
 }
 
+/* Remover aspas decorativas */
+.testimonial-text::before {
+  display: none; /* Remove completamente as aspas */
+}
+
+/* Ajuste no texto do depoimento */
 .testimonial-text {
   font-style: italic;
   margin-bottom: 25px;
@@ -944,17 +954,12 @@ footer {
   line-height: 1.6;
   position: relative;
   font-size: 1rem;
+  padding-left: 0; /* Remove qualquer padding que possa ter sido usado para as aspas */
 }
 
-/* Aspas decorativas */
-.testimonial-text::before {
-  content: '"';
+/* Garantir que as estrelas fiquem roxas também no modo escuro */
+[data-theme="dark"] .testimonials .rating {
   color: var(--primary-color);
-  font-size: 2rem;
-  position: absolute;
-  left: -10px;
-  top: -10px;
-  opacity: 0.3;
 }
 
 /* Informações do cliente */
@@ -1691,4 +1696,3 @@ footer {
 [data-theme="dark"] .indicator:hover {
   background: rgba(255, 255, 255, 0.6);
 }
-

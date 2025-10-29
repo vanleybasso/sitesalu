@@ -1,182 +1,391 @@
-// Mobile Menu Toggle
-const menuToggle = document.querySelector('.menu-toggle');
-const navLinks = document.querySelector('.nav-links');
+// ====================
+// INICIALIZAÇÃO DO TEMA
+// ====================
 
-menuToggle.addEventListener('click', () => {
-  navLinks.classList.toggle('active');
-  menuToggle.innerHTML = navLinks.classList.contains('active') ? 
-    '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
-});
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
+// Função para inicializar o tema
+function initializeTheme() {
+    // Verifica se o usuário já tem uma preferência salva
+    const savedTheme = localStorage.getItem('theme');
     
-    if(this.getAttribute('href') === '#') return;
-    
-    const target = document.querySelector(this.getAttribute('href'));
-    if(target) {
-      window.scrollTo({
-        top: target.offsetTop - 80,
-        behavior: 'smooth'
-      });
-      
-      // Close mobile menu if open
-      if(navLinks.classList.contains('active')) {
-        navLinks.classList.remove('active');
-        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-      }
+    // Se não tem preferência salva, define como claro
+    if (!savedTheme) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        updateThemeToggleIcon('light');
+    } else {
+        // Se tem preferência, usa a salva
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeToggleIcon(savedTheme);
     }
-  });
-});
+}
 
-// Add shadow to header on scroll
-window.addEventListener('scroll', () => {
-  const header = document.querySelector('header');
-  if(window.scrollY > 10) {
-    header.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-  } else {
-    header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-  }
-});
+// Função para atualizar o ícone do botão de tema
+function updateThemeToggleIcon(theme) {
+    const themeIcon = document.querySelector('.theme-toggle i');
+    if (theme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+    } else {
+        themeIcon.className = 'fas fa-moon';
+    }
+}
 
-// Logo click behavior
-const logo = document.querySelector('.logo');
+// ====================
+// MENU MOBILE
+// ====================
 
-logo.addEventListener('click', function(e) {
-  e.preventDefault();
-  
-  // Verifica se já está no topo
-  if(window.scrollY === 0) {
-    window.location.reload();
-  } else {
-    // Vai para o topo e depois recarrega
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+function initializeMobileMenu() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            
+            // Altera o ícone do menu
+            const icon = menuToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.className = 'fas fa-times';
+            } else {
+                icon.className = 'fas fa-bars';
+            }
+        });
+        
+        // Fechar menu ao clicar em um link
+        const links = navLinks.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                menuToggle.querySelector('i').className = 'fas fa-bars';
+            });
+        });
+    }
+}
+
+// ====================
+// CAROUSEL DE SCREENSHOTS
+// ====================
+
+function initializeCarousel() {
+    const carousel = document.querySelector('.carousel');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    if (!carousel || slides.length === 0) return;
+    
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    
+    // Função para mostrar slide específico
+    function showSlide(index) {
+        // Remove classe active de todos os slides
+        slides.forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Remove classe active de todos os indicadores
+        indicators.forEach(indicator => {
+            indicator.classList.remove('active');
+        });
+        
+        // Adiciona classe active ao slide atual
+        slides[index].classList.add('active');
+        
+        // Adiciona classe active ao indicador atual
+        if (indicators[index]) {
+            indicators[index].classList.add('active');
+        }
+        
+        currentSlide = index;
+    }
+    
+    // Próximo slide
+    function nextSlide() {
+        let nextIndex = currentSlide + 1;
+        if (nextIndex >= totalSlides) {
+            nextIndex = 0;
+        }
+        showSlide(nextIndex);
+    }
+    
+    // Slide anterior
+    function prevSlide() {
+        let prevIndex = currentSlide - 1;
+        if (prevIndex < 0) {
+            prevIndex = totalSlides - 1;
+        }
+        showSlide(prevIndex);
+    }
+    
+    // Event listeners para botões
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextSlide);
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', prevSlide);
+    }
+    
+    // Event listeners para indicadores
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            showSlide(index);
+        });
     });
     
-    // Recarrega após chegar ao topo (opcional)
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  }
-});
-
-// Dark Mode Toggle
-const themeToggle = document.querySelector('.theme-toggle');
-const icon = themeToggle.querySelector('i');
-
-// Verifica o tema atual
-const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-// Aplica o tema salvo
-if (currentTheme === 'dark') {
-  document.body.setAttribute('data-theme', 'dark');
-  icon.classList.replace('fa-moon', 'fa-sun');
-} else {
-  icon.classList.replace('fa-sun', 'fa-moon');
-}
-
-// Alterna o tema ao clicar
-themeToggle.addEventListener('click', () => {
-  const currentTheme = document.body.getAttribute('data-theme');
-  
-  if (currentTheme === 'dark') {
-    document.body.removeAttribute('data-theme');
-    localStorage.setItem('theme', 'light');
-    icon.classList.replace('fa-sun', 'fa-moon');
-  } else {
-    document.body.setAttribute('data-theme', 'dark');
-    localStorage.setItem('theme', 'dark');
-    icon.classList.replace('fa-moon', 'fa-sun');
-  }
-});
-
-// Carousel Functionality
-const carousel = document.querySelector('.carousel');
-const slides = document.querySelectorAll('.carousel-slide');
-const prevBtn = document.querySelector('.carousel-prev');
-const nextBtn = document.querySelector('.carousel-next');
-const indicators = document.querySelectorAll('.indicator');
-
-let currentSlide = 0;
-const totalSlides = slides.length;
-
-// Função para mostrar slide específico
-function showSlide(index) {
-  // Remove classe active de todos os slides e indicadores
-  slides.forEach(slide => slide.classList.remove('active'));
-  indicators.forEach(indicator => indicator.classList.remove('active'));
-  
-  // Adiciona classe active ao slide e indicador atual
-  slides[index].classList.add('active');
-  indicators[index].classList.add('active');
-  
-  currentSlide = index;
-}
-
-// Próximo slide
-function nextSlide() {
-  currentSlide = (currentSlide + 1) % totalSlides;
-  showSlide(currentSlide);
-}
-
-// Slide anterior
-function prevSlide() {
-  currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-  showSlide(currentSlide);
-}
-
-// Event listeners
-nextBtn.addEventListener('click', nextSlide);
-prevBtn.addEventListener('click', prevSlide);
-
-// Indicadores clicáveis
-indicators.forEach((indicator, index) => {
-  indicator.addEventListener('click', () => {
-    showSlide(index);
-  });
-});
-
-// Auto-play (opcional - descomente se quiser)
-// let carouselInterval = setInterval(nextSlide, 5000);
-
-// Pausar auto-play ao interagir (se estiver usando auto-play)
-// carouselContainer.addEventListener('mouseenter', () => {
-//   clearInterval(carouselInterval);
-// });
-
-// carouselContainer.addEventListener('mouseleave', () => {
-//   carouselInterval = setInterval(nextSlide, 5000);
-// });
-
-// Inicializar primeiro slide
-showSlide(0);
-
-// Garantir que as flechas mantenham posição consistente
-function updateCarouselButtonsPosition() {
-  const carouselContainer = document.querySelector('.carousel-container');
-  const prevBtn = document.querySelector('.carousel-prev');
-  const nextBtn = document.querySelector('.carousel-next');
-  
-  if (carouselContainer && prevBtn && nextBtn) {
-    const containerHeight = carouselContainer.offsetHeight;
-    const middle = containerHeight / 2;
+    // Auto-play (opcional)
+    let autoPlayInterval;
     
-    prevBtn.style.top = `${middle}px`;
-    nextBtn.style.top = `${middle}px`;
-  }
+    function startAutoPlay() {
+        autoPlayInterval = setInterval(nextSlide, 5000); // Muda a cada 5 segundos
+    }
+    
+    function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+    }
+    
+    // Inicia auto-play
+    startAutoPlay();
+    
+    // Pausa auto-play quando o mouse está sobre o carousel
+    carousel.addEventListener('mouseenter', stopAutoPlay);
+    carousel.addEventListener('mouseleave', startAutoPlay);
+    
+    // Navegação por teclado
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            prevSlide();
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+        }
+    });
 }
 
-// Executar quando a janela for redimensionada
-window.addEventListener('resize', updateCarouselButtonsPosition);
+// ====================
+// SCROLL SUAVE
+// ====================
 
-// Executar quando as imagens carregarem
-window.addEventListener('load', updateCarouselButtonsPosition);
+function initializeSmoothScroll() {
+    const navLinks = document.querySelectorAll('.nav-links a, .footer-column a[href^="#"]');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Só aplica scroll suave para links âncora
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - 80; // Considera o header fixo
+                    
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+            // Links externos (WhatsApp, etc.) abrem normalmente
+        });
+    });
+}
 
-// Executar quando mudar o slide (caso as imagens carreguem de forma assíncrona)
-// Adicione esta linha dentro da função showSlide():
-// updateCarouselButtonsPosition();
+// ====================
+// HEADER SCROLL EFFECT
+// ====================
 
+function initializeHeaderScroll() {
+    const header = document.querySelector('header');
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 100) {
+            header.style.background = 'var(--header-bg)';
+            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+        } else {
+            header.style.background = 'var(--header-bg)';
+            header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+        }
+        
+        lastScrollY = window.scrollY;
+    });
+}
+
+// ====================
+// ANIMAÇÃO DE REVEAL
+// ====================
+
+function initializeScrollReveal() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observa elementos para animação
+    const elementsToAnimate = document.querySelectorAll('.benefit-card, .feature-card, .step, .testimonial-card, .pricing-card');
+    
+    elementsToAnimate.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+    });
+}
+
+// ====================
+// ALTERNÂNCIA DE TEMA
+// ====================
+
+function initializeThemeToggle() {
+    const themeToggle = document.querySelector('.theme-toggle');
+    
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeToggleIcon(newTheme);
+        });
+    }
+}
+
+// ====================
+// FORMULÁRIO DE CONTATO (se houver)
+// ====================
+
+function initializeContactForm() {
+    const contactForm = document.getElementById('contact-form');
+    
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Aqui você pode adicionar a lógica para enviar o formulário
+            // Por exemplo, usando Fetch API ou redirecionando para WhatsApp
+            
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const message = formData.get('message');
+            
+            // Exemplo: Redirecionar para WhatsApp com a mensagem
+            const whatsappMessage = `Olá! Meu nome é ${name}. ${message}`;
+            const whatsappUrl = `https://wa.me/5516988100103?text=${encodeURIComponent(whatsappMessage)}`;
+            
+            window.open(whatsappUrl, '_blank');
+        });
+    }
+}
+
+// ====================
+// CONTADORES (se necessário)
+// ====================
+
+function initializeCounters() {
+    const counters = document.querySelectorAll('.counter');
+    
+    if (counters.length > 0) {
+        const observerOptions = {
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    const duration = 2000; // 2 segundos
+                    const step = target / (duration / 16); // 60fps
+                    let current = 0;
+                    
+                    const timer = setInterval(function() {
+                        current += step;
+                        if (current >= target) {
+                            counter.textContent = target;
+                            clearInterval(timer);
+                        } else {
+                            counter.textContent = Math.floor(current);
+                        }
+                    }, 16);
+                    
+                    observer.unobserve(counter);
+                }
+            });
+        }, observerOptions);
+        
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    }
+}
+
+// ====================
+// INICIALIZAÇÃO GERAL
+// ====================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializa o tema (modo claro como padrão para novos usuários)
+    initializeTheme();
+    
+    // Inicializa todas as funcionalidades
+    initializeMobileMenu();
+    initializeCarousel();
+    initializeSmoothScroll();
+    initializeHeaderScroll();
+    initializeScrollReveal();
+    initializeThemeToggle();
+    initializeContactForm();
+    initializeCounters();
+    
+    console.log('Salú - Sistema inicializado com sucesso!');
+});
+
+// ====================
+// TRATAMENTO DE ERROS
+// ====================
+
+window.addEventListener('error', function(e) {
+    console.error('Erro detectado:', e.error);
+});
+
+// ====================
+// LOADING PERFORMANCE
+// ====================
+
+// Preload de imagens importantes (opcional)
+function preloadImages() {
+    const images = [
+        '/logo.png',
+        '/favicon.png',
+        '/captura1.jpg',
+        '/captura2.jpg',
+        '/captura3.jpg',
+        '/captura4.jpg',
+        '/captura5.jpg',
+        '/captura6.jpg',
+        '/captura7.jpg'
+    ];
+    
+    images.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+}
+
+// Chama o preload após o carregamento inicial
+window.addEventListener('load', preloadImages);
