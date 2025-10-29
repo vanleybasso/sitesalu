@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Salú - Saúde em Evolução</title>
+  
+  <!-- Favicon -->
+<link rel="icon" href="/favicon.png" type="image/png">
+  
+  <!-- Biblioteca de ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/styles/styles.css">
+</head>
+
+<body>
+    <!-- ==================== -->
+  <!-- CABEÇALHO -->
+  <!-- ==================== -->
+  <header>
+    <div class="container header-container">
+      <!-- Logo -->
+      <div class="logo">
+        <img src="/logo.png" alt="Logo Salú" />
+      </div>
+      
+            <!-- Navegação principal -->
+      <ul class="nav-links">
+        <li><a href="#screenshots">App</a></li>
+        <li><a href="#benefits">Benefícios</a></li>
+        <li><a href="#features">Funcionalidades</a></li>
+        <li><a href="#process">Implementação</a></li>
+        <li><a href="#testimonials">Depoimentos</a></li>
+        <li><a href="#pricing">Planos</a></li>
+        <li><a href="#cta">Contato</a></li>
+      </ul>
+      
+      <!-- Botão do menu mobile -->
+      <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Botão para alternar entre temas claro e escuro -->
+  <button class="theme-toggle" aria-label="Alternar tema">
+    <i class="fas fa-moon"></i>
+  </button>
+
+   <!-- ==================== -->
+  <!-- SEÇÃO HERO -->
+  <!-- ==================== -->
+  <section class="hero">
+    <div class="container">
+      <h1>Salú - Saúde em Evolução</h1>
+      <p>O sistema completo para profissionais e famílias acompanharem cada passo do desenvolvimento.</p>
+      <div class="btn-container">
+        <a href="https://wa.me/5516988100103" class="btn btn-primary">
+          <i class="fas fa-calendar-alt"></i> Agendar demonstração
+        </a>
+        <a href="https://wa.me/5516988100103" class="btn btn-outline" target="_blank">
+          <i class="fab fa-whatsapp"></i> Entrar em contato
+        </a>
+      </div>
+    </div>
+  </section>
+
+    <!-- ==================== -->
+  <!-- SEÇÃO DE SCREENSHOTS COM CAROUSEL -->
+  <!-- ==================== -->
+  <section id="screenshots" class="screenshots">
+    <div class="container">
+      <h2>Conheça o Aplicativo</h2>
+      <p class="section-subtitle">Interface intuitiva e moderna desenvolvida para facilitar o seu trabalho</p>
+      
+      <div class="carousel-container">
+        <div class="carousel">
+          <!-- Slide 1 -->
+          <div class="carousel-slide active">
+            <div class="phone-mockup">
+              <img src="/captura1.jpg" alt="Tela inicial do aplicativo Salú" />
+            </div>
+            <div class="slide-content">
+              <h3>Dashboard</h3>
+              <p>Principais funcionalidades do aplicativo.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 2 -->
+          <div class="carousel-slide">
+            <div class="phone-mockup">
+              <img src="/captura2.jpg" alt="Gestão de pacientes" />
+            </div>
+            <div class="slide-content">
+              <h3>Avaliações </h3>
+              <p>Registro completo das avaliações iniciais.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 3 -->
+          <div class="carousel-slide">
+            <div class="phone-mockup">
+              <img src="/captura3.jpg" alt="Prontuário digital" />
+            </div>
+            <div class="slide-content">
+              <h3>Evoluções</h3>
+              <p>Acompanhamento detalhado das evoluções diárias.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 4 -->
+          <div class="carousel-slide">
+            <div class="phone-mockup">
+              <img src="/captura4.jpg" alt="Agenda de atendimentos" />
+            </div>
+            <div class="slide-content">
+              <h3>Interação com Família</h3>
+              <p>Comentários de pais sobre as atividades realizadas diariamente.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 5 -->
+          <div class="carousel-slide">
+            <div class="phone-mockup">
+              <img src="/captura5.jpg" alt="Registro fotográfico" />
+            </div>
+            <div class="slide-content">
+              <h3>Reavaliações</h3>
+              <p>Acompanhamento completo das reavaliações periódicas.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 6 -->
+          <div class="carousel-slide">
+            <div class="phone-mockup">
+              <img src="/captura6.jpg" alt="Relatórios e análises" />
+            </div>
+            <div class="slide-content">
+              <h3>Alertas</h3>
+              <p>Monitoramento em tempo real de alertas.</p>
+            </div>
+          </div>
+          
+          <!-- Slide 7 -->
+          <div class="carousel-slide">
+            <div class="phone-mockup">
+              <img src="/captura7.jpg" alt="Comunicação integrada" />
+            </div>
+            <div class="slide-content">
+              <h3>Galeria</h3>
+              <p>Registro com imagens e vídeos dos atendimentos.</p>
+            </div>
+          </div>
+          
+        
+        
+        <!-- Controles do Carousel -->
+        <button class="carousel-btn carousel-prev" aria-label="Slide anterior">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-btn carousel-next" aria-label="Próximo slide">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <!-- Indicadores -->
+        <div class="carousel-indicators">
+          <span class="indicator active" data-slide="0"></span>
+          <span class="indicator" data-slide="1"></span>
+          <span class="indicator" data-slide="2"></span>
+          <span class="indicator" data-slide="3"></span>
+          <span class="indicator" data-slide="4"></span>
+          <span class="indicator" data-slide="5"></span>
+          <span class="indicator" data-slide="6"></span>
+          <span class="indicator" data-slide="7"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== -->
+  <!-- SEÇÃO DE BENEFÍCIOS -->
+  <!-- ==================== -->
+  <section id="benefits" class="benefits">
+    <div class="container">
+      <h2>Benefícios</h2>
+      <p class="section-subtitle">Sistema especializado para potencializar o trabalho com crianças e famílias</p>
+      
+      <div class="benefits-grid">
+        <!-- Card de benefício 1 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-child"></i>
+          </div>
+          <h3>Acompanhamento Integral</h3>
+          <p>Registro completo do desenvolvimento da criança: avaliações iniciais, evoluções diárias com fotos/vídeos e reavaliações periódicas.</p>
+        </div>
+        
+        <!-- Card de benefício 2 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Família Incluída</h3>
+          <p>Pais e responsáveis acompanham toda a evolução, comentam nas atividades e interagem com a equipe profissional em tempo real.</p>
+        </div>
+        
+        <!-- Card de benefício 3 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-camera"></i>
+          </div>
+          <h3>Registro Visual</h3>
+          <p>Galeria de fotos e vídeos organizada por paciente, permitindo comparar a evolução visual e compartilhar conquistas com as famílias.</p>
+        </div>
+        
+        <!-- Card de benefício 4 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3>Sistema de Alertas</h3>
+          <p>Notificações personalizadas para marcos importantes, observações críticas e comunicados urgentes para a equipe e famílias.</p>
+        </div>
+        
+        <!-- Card de benefício 5 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <h3>Ranking de Engajamento</h3>
+          <p>Incentivo à equipe com ranking mensal dos profissionais que mais realizam evoluções e interações qualificadas.</p>
+        </div>
+        
+        <!-- Card de benefício 6 -->
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Segurança e LGPD</h3>
+          <p>Proteção total dos dados sensíveis das crianças e famílias, com acesso controlado e criptografia de todas as informações.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   <!-- ==================== -->
+  <!-- SEÇÃO DE FUNCIONALIDADES -->
+  <!-- ==================== -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2>Funcionalidades</h2>
+      <p class="section-subtitle">Potencialize o acompanhamento e a evolução de cada criança com tecnologia especializada</p>
+      
+      <div class="features-container">
+        <!-- Funcionalidade 1 -->
+        <div class="feature-card">
+          <div class="feature-img">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Gestão de Pacientes e Profissionais</h3>
+            <ul>
+              <li>Cadastro completo de crianças e suas famílias</li>
+              <li>Gerenciamento de equipe multidisciplinar</li>
+              <li>Controle de permissões e acessos</li>
+              <li>Histórico completo do desenvolvimento</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Funcionalidade 2 -->
+        <div class="feature-card">
+          <div class="feature-img">
+            <i class="fas fa-clipboard-check"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Avaliações e Reavaliações</h3>
+            <ul>
+              <li>Avaliações iniciais detalhadas</li>
+              <li>Reavaliações periódicas programadas</li>
+              <li>Marcos do desenvolvimento infantil</li>
+              <li>Comparativo de evolução temporal</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Funcionalidade 3 -->
+        <div class="feature-card">
+          <div class="feature-img">
+            <i class="fas fa-calendar-day"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Evoluções Diárias</h3>
+            <ul>
+              <li>Registro detalhado de cada atendimento</li>
+              <li>Upload de fotos e vídeos das sessões</li>
+              <li>Descrição das atividades realizadas</li>
+              <li>Observações comportamentais</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Funcionalidade 4 -->
+        <div class="feature-card">
+          <div class="feature-img">
+            <i class="fas fa-images"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Galeria de Evolução</h3>
+            <ul>
+              <li>Armazenamento organizado de mídias</li>
+              <li>Fotos e vídeos por paciente e data</li>
+              <li>Comparação visual do progresso</li>
+              <li>Compartilhamento seguro com famílias</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Funcionalidade 5 -->
+        <div class="feature-card">
+          <div class="feature-img">
+            <i class="fas fa-comment-medical"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Comunicação Família-Equipe</h3>
+            <ul>
+              <li>Pais acompanham evolução em tempo real</li>
+              <li>Comentários nas atividades dos filhos</li>
+              <li>Mensagens diretas com profissionais</li>
+              <li>Notificações de marcos importantes</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Funcionalidade 6 -->
+        <div class="feature-card">
+          <div class="feature-img">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="feature-content">
+            <h3>Segurança e Privacidade</h3>
+            <ul>
+              <li>Conformidade total com LGPD</li>
+              <li>Criptografia de dados sensíveis</li>
+              <li>Controle granular de acessos</li>
+              <li>Backup automático e seguro</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ==================== -->
+  <!-- SEÇÃO DE PROCESSO -->
+  <!-- ==================== -->
+  <section id="process" class="process">
+    <div class="container">
+      <h2>Como implementar o sistema Salú na sua clínica</h2>
+      <p class="section-subtitle">Um processo simples e guiado para transformar sua gestão em poucos passos</p>
+      
+      <div class="process-steps">
+        <!-- Passo 1 -->
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Demonstração Personalizada</h3>
+          <p>Agende uma demonstração gratuita e conheça todas as funcionalidades adaptadas à sua realidade.</p>
+        </div>
+        
+        <!-- Passo 2 -->
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Personalização do Sistema</h3>
+          <p>Adaptamos o Salú às necessidades específicas da sua clínica, equipe e fluxo de trabalho.</p>
+        </div>
+        
+        <!-- Passo 3 -->
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Implementação Completa</h3>
+          <p>Realizamos a implantação do sistema e migração dos dados existentes de forma segura e organizada.</p>
+        </div>
+        
+        <!-- Passo 4 -->
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Treinamento da Equipe</h3>
+          <p>Capacitamos sua equipe para utilizar todas as funcionalidades com eficiência e confiança.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ==================== -->
+  <!-- SEÇÃO DE DEPOIMENTOS -->
+  <!-- ==================== -->
+  <section id="testimonials" class="testimonials">
+    <div class="container">
+      <h2>O que os profissionais dizem</h2>
+      <p class="section-subtitle">Experiências reais de quem já transformou o acompanhamento do desenvolvimento infantil</p>
+      
+      <div class="testimonials-grid">
+        <!-- Depoimento 1 -->
+        <div class="testimonial-card">
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">O Salú revolucionou nosso trabalho. Conseguimos acompanhar cada detalhe do desenvolvimento das crianças e as famílias se sentem muito mais incluídas no processo terapêutico."</p>
+          <div class="client-info">
+            <div class="client-avatar">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div>
+              <h4>Dra. Ana Carolina Silva</h4>
+              <p class="client-role">Coordenadora - Clínica Espaço Crescer</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Depoimento 2 -->
+        <div class="testimonial-card">
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">A possibilidade de registrar as evoluções com fotos e vídeos mudou completamente nossa forma de trabalho. As famílias amam acompanhar o progresso visual dos filhos."</p>
+          <div class="client-info">
+            <div class="client-avatar">
+              <i class="fas fa-user-nurse"></i>
+            </div>
+            <div>
+              <h4>Thaís Oliveira</h4>
+              <p class="client-role">Terapeuta Ocupacional - Desenvolvimento Kids</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Depoimento 3 -->
+        <div class="testimonial-card">
+          <div class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">A comunicação com as famílias ficou muito mais eficiente. Eles acompanham tudo em tempo real e podemos trocar informações de forma segura e organizada."</p>
+          <div class="client-info">
+            <div class="client-avatar">
+              <i class="fas fa-user-graduate"></i>
+            </div>
+            <div>
+              <h4>Dr. Ricardo Mendes</h4>
+              <p class="client-role">Psicólogo - Instituto Desenvolver</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ==================== -->
+  <!-- SEÇÃO DE PLANOS -->
+  <!-- ==================== -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <h2>Planos e Investimento</h2>
+      <p class="section-subtitle">Escolha o plano ideal para o tamanho do seu negócio</p>
+      
+      <div class="pricing-grid">
+        <!-- Plano 1 - Individual Basic -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Individual Basic</h3>
+            <div class="price">R$97<span>/mês</span></div>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> <strong>1 Profissional</strong></li>
+              <li><i class="fas fa-check"></i> <strong>Até 20 Pacientes</strong></li>
+              <li><i class="fas fa-check"></i> Todas as funcionalidades básicas</li>
+              <li><i class="fas fa-check"></i> Suporte WhatsApp</li>
+              <li><i class="fas fa-check"></i> Atualizações gratuitas</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <p class="plan-type">Ideal para</p>
+            <p class="plan-description">Profissional iniciante</p>
+            <a href="https://wa.me/5516988100103?text=Olá! Gostaria de assinar o plano Individual Basic" class="btn btn-primary" target="_blank">
+              <i class="fab fa-whatsapp"></i> Assinar Plano
+            </a>
+          </div>
+        </div>
+
+        <!-- Plano 2 - Individual Plus -->
+        <div class="pricing-card">
+           
+          <div class="pricing-header">
+            <h3>Individual Plus</h3>
+            <div class="price">R$197<span>/mês</span></div>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> <strong>1 Profissional</strong></li>
+              <li><i class="fas fa-check"></i> <strong>Até 100 Pacientes</strong></li>
+              <li><i class="fas fa-check"></i> Todas as funcionalidades Plus</li>
+              <li><i class="fas fa-check"></i> Suporte WhatsApp</li>
+              <li><i class="fas fa-check"></i> Backup automático</li>
+              <li><i class="fas fa-check"></i> Relatórios avançados</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <p class="plan-type">Ideal para</p>
+            <p class="plan-description">Profissional consolidado</p>
+            <a href="https://wa.me/5516988100103?text=Olá! Gostaria de assinar o plano Individual Plus" class="btn btn-primary" target="_blank">
+              <i class="fab fa-whatsapp"></i> Assinar Plano
+            </a>
+          </div>
+        </div>
+
+        <!-- Plano 3 - Clínica -->
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Mais Popular</div>
+          <div class="pricing-header">
+            <h3>Clínica</h3>
+            <div class="price">R$297<span>/mês</span></div>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> <strong>Até 15 Profissionais</strong></li>
+              <li><i class="fas fa-check"></i> <strong>Até 150 Pacientes</strong></li>
+              <li><i class="fas fa-check"></i> Gestão de equipe completa</li>
+              <li><i class="fas fa-check"></i> Suporte dedicado</li>
+              <li><i class="fas fa-check"></i> Treinamento da equipe</li>
+              <li><i class="fas fa-check"></i> Dashboard administrativo</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <p class="plan-type">Ideal para</p>
+            <p class="plan-description">Pequenas/médias clínicas</p>
+            <a href="https://wa.me/5516988100103?text=Olá! Gostaria de assinar o plano Clínica" class="btn btn-primary" target="_blank">
+              <i class="fab fa-whatsapp"></i> Assinar Plano
+            </a>
+          </div>
+        </div>
+
+        <!-- Plano 4 - Clínica Premium -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Clínica Premium</h3>
+            <div class="price">R$497<span>/mês</span></div>
+          </div>
+          <div class="pricing-features">
+            <ul>
+              <li><i class="fas fa-check"></i> <strong>Profissionais Ilimitados</strong></li>
+              <li><i class="fas fa-check"></i> <strong>Pacientes Ilimitados</strong></li>
+              <li><i class="fas fa-check"></i> Todas as funcionalidades</li>
+              <li><i class="fas fa-check"></i> Suporte 24/7</li>
+              <li><i class="fas fa-check"></i> Implementação personalizada</li>
+              <li><i class="fas fa-check"></i> API e integrações</li>
+            </ul>
+          </div>
+          <div class="pricing-footer">
+            <p class="plan-type">Ideal para</p>
+            <p class="plan-description">Grandes clínicas e redes</p>
+            <a href="https://wa.me/5516988100103?text=Olá! Gostaria de assinar o plano Clínica Premium" class="btn btn-primary" target="_blank">
+              <i class="fab fa-whatsapp"></i> Assinar Plano
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- ==================== -->
+  <!-- SEÇÃO CTA (CALL TO ACTION) -->
+  <!-- ==================== -->
+  <section id="cta" class="cta">
+    <div class="container">
+      <h2>Pronto para transformar sua clínica?</h2>
+      <p>Entre em contato agora mesmo ou agende uma demonstração gratuita para conhecer todas as funcionalidades do Salú.</p>
+      <div class="btn-container">
+        <a href="https://wa.me/5516988100103" class="btn btn-primary" target="_blank">
+          <i class="fas fa-calendar-alt"></i> Agendar demonstração
+        </a>
+        <a href="https://wa.me/5516988100103" class="btn btn-outline" target="_blank">
+          <i class="fab fa-whatsapp"></i> Falar no whatsapp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  
+
+    <!-- ==================== -->
+  <!-- RODAPÉ -->
+  <!-- ==================== -->
+  <footer>
+    <div class="container footer-container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <div class="logo">
+            <img src="/logo.png" alt="Logo Salú" />
+          </div>
+          <p style="line-height: 1.4; margin-bottom: 15px; margin-top: 0;">Sistema completo para profissionais e famílias acompanharem cada passo do desenvolvimento.</p>
+          <div class="social-links">
+            <a href="https://instagram.com/salu.ev" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://wa.me/5516988100103" aria-label="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        
+               <div class="footer-column">
+          <h3>Links rápidos</h3>
+          <ul>
+            <li><a href="#screenshots">App</a></li>
+            <li><a href="#benefits">Benefícios</a></li>
+            <li><a href="#features">Funcionalidades</a></li>
+            <li><a href="#process">Implementação</a></li>
+            <li><a href="#testimonials">Depoimentos</a></li>
+            <li><a href="#pricing">Planos</a></li>
+            <li><a href="#cta">Contato</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Contatos</h3>
+          <ul>
+            <li><i class="fas fa-envelope"></i> saluev@hotmail.com</li>
+            <li><i class="fab fa-whatsapp"></i> (16) 98810-0103</li>
+            <li><i class="fas fa-map-marker-alt"></i> Passo Fundo, RS</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="copyright">
+        <p>&copy; 2025 Salú - Saúde em Evolução. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="/scripts/scripts.js"></script>
+</body>
+</html>
