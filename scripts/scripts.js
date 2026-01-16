@@ -1,391 +1,667 @@
 // ====================
-// INICIALIZAÇÃO DO TEMA
+// CONSTANTES E CONFIGURAÇÕES
 // ====================
+const CONFIG = {
+  carousel: {
+    autoPlay: true,
+    interval: 5000,
+    slides: [
+      { img: '/captura1.jpg' },
+      { img: '/captura2.jpg' },
+      { img: '/captura3.jpg' },
+      { img: '/captura4.jpg' },
+      { img: '/captura5.jpg' },
+      { img: '/captura6.jpg' },
+      { img: '/captura7.jpg' }
+    ]
+  }
+};
 
-// Função para inicializar o tema
-function initializeTheme() {
-    // Verifica se o usuário já tem uma preferência salva
-    const savedTheme = localStorage.getItem('theme');
+// ====================
+// GERENCIAMENTO DE TEMA
+// ====================
+class ThemeManager {
+  constructor() {
+    this.themeToggle = document.querySelector('.theme-toggle');
+    this.init();
+  }
+
+  init() {
+    this.loadTheme();
+    this.setupEventListeners();
+  }
+
+  loadTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    this.updateToggleIcon(savedTheme);
+  }
+
+  updateToggleIcon(theme) {
+    if (this.themeToggle) {
+      const icon = this.themeToggle.querySelector('i');
+      icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+  }
+
+  toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
-    // Se não tem preferência salva, define como claro
-    if (!savedTheme) {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        updateThemeToggleIcon('light');
-    } else {
-        // Se tem preferência, usa a salva
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeToggleIcon(savedTheme);
-    }
-}
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    this.updateToggleIcon(newTheme);
+    
+    document.dispatchEvent(new CustomEvent('themeChange', { detail: { theme: newTheme } }));
+  }
 
-// Função para atualizar o ícone do botão de tema
-function updateThemeToggleIcon(theme) {
-    const themeIcon = document.querySelector('.theme-toggle i');
-    if (theme === 'dark') {
-        themeIcon.className = 'fas fa-sun';
-    } else {
-        themeIcon.className = 'fas fa-moon';
+  setupEventListeners() {
+    if (this.themeToggle) {
+      this.themeToggle.addEventListener('click', () => this.toggleTheme());
     }
+  }
 }
 
 // ====================
 // MENU MOBILE
 // ====================
+class MobileMenu {
+  constructor() {
+    this.menuToggle = document.querySelector('.menu-toggle');
+    this.nav = document.querySelector('.modern-nav');
+    this.init();
+  }
 
-function initializeMobileMenu() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+  init() {
+    this.setupEventListeners();
+  }
+
+  toggleMenu() {
+    this.nav.classList.toggle('active');
+    this.menuToggle.classList.toggle('active');
     
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            
-            // Altera o ícone do menu
-            const icon = menuToggle.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.className = 'fas fa-times';
-            } else {
-                icon.className = 'fas fa-bars';
-            }
-        });
-        
-        // Fechar menu ao clicar em um link
-        const links = navLinks.querySelectorAll('a');
-        links.forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.classList.remove('active');
-                menuToggle.querySelector('i').className = 'fas fa-bars';
-            });
-        });
+    const spans = this.menuToggle.querySelectorAll('.hamburger span');
+    if (this.nav.classList.contains('active')) {
+      spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+    } else {
+      spans[0].style.transform = 'none';
+      spans[1].style.opacity = '1';
+      spans[2].style.transform = 'none';
     }
+  }
+
+  closeMenu() {
+    this.nav.classList.remove('active');
+    this.menuToggle.classList.remove('active');
+    
+    const spans = this.menuToggle.querySelectorAll('.hamburger span');
+    spans[0].style.transform = 'none';
+    spans[1].style.opacity = '1';
+    spans[2].style.transform = 'none';
+  }
+
+  setupEventListeners() {
+    if (this.menuToggle) {
+      this.menuToggle.addEventListener('click', () => this.toggleMenu());
+    }
+
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => this.closeMenu());
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        this.closeMenu();
+      }
+    });
+  }
 }
 
 // ====================
-// CAROUSEL DE SCREENSHOTS
+// CAROUSEL SIMPLES CENTRALIZADO
 // ====================
+class SimplePhoneCarousel {
+  constructor() {
+    this.carouselTrack = document.querySelector('.phone-carousel-track');
+    this.prevBtn = document.querySelector('.phone-carousel-btn.prev-btn');
+    this.nextBtn = document.querySelector('.phone-carousel-btn.next-btn');
+    
+    this.currentIndex = 0;
+    this.totalSlides = CONFIG.carousel.slides.length;
+    this.autoPlayInterval = null;
+    this.isAnimating = false;
+    this.init();
+  }
 
-function initializeCarousel() {
-    const carousel = document.querySelector('.carousel');
-    const slides = document.querySelectorAll('.carousel-slide');
-    const prevBtn = document.querySelector('.carousel-prev');
-    const nextBtn = document.querySelector('.carousel-next');
-    const indicators = document.querySelectorAll('.indicator');
+  init() {
+    this.createSlides();
+    this.setupEventListeners();
+    this.startAutoPlay();
+    this.updateCarousel();
+  }
+
+  createSlides() {
+    // Limpa o track
+    this.carouselTrack.innerHTML = '';
     
-    if (!carousel || slides.length === 0) return;
-    
-    let currentSlide = 0;
-    const totalSlides = slides.length;
-    
-    // Função para mostrar slide específico
-    function showSlide(index) {
-        // Remove classe active de todos os slides
-        slides.forEach(slide => {
-            slide.classList.remove('active');
-        });
-        
-        // Remove classe active de todos os indicadores
-        indicators.forEach(indicator => {
-            indicator.classList.remove('active');
-        });
-        
-        // Adiciona classe active ao slide atual
-        slides[index].classList.add('active');
-        
-        // Adiciona classe active ao indicador atual
-        if (indicators[index]) {
-            indicators[index].classList.add('active');
-        }
-        
-        currentSlide = index;
-    }
-    
-    // Próximo slide
-    function nextSlide() {
-        let nextIndex = currentSlide + 1;
-        if (nextIndex >= totalSlides) {
-            nextIndex = 0;
-        }
-        showSlide(nextIndex);
-    }
-    
-    // Slide anterior
-    function prevSlide() {
-        let prevIndex = currentSlide - 1;
-        if (prevIndex < 0) {
-            prevIndex = totalSlides - 1;
-        }
-        showSlide(prevIndex);
-    }
-    
-    // Event listeners para botões
-    if (nextBtn) {
-        nextBtn.addEventListener('click', nextSlide);
-    }
-    
-    if (prevBtn) {
-        prevBtn.addEventListener('click', prevSlide);
-    }
-    
-    // Event listeners para indicadores
-    indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => {
-            showSlide(index);
-        });
+    // Cria todos os slides
+    CONFIG.carousel.slides.forEach((slide, index) => {
+      const slideElement = document.createElement('div');
+      slideElement.className = `phone-slide ${index === this.currentIndex ? 'active' : ''}`;
+      slideElement.setAttribute('data-index', index);
+      slideElement.innerHTML = `
+        <div class="floating-phone-slide">
+          <div class="phone-screen">
+            <img src="${slide.img}" alt="Captura do aplicativo ${index + 1}" loading="lazy">
+          </div>
+        </div>
+      `;
+      this.carouselTrack.appendChild(slideElement);
     });
+  }
+
+  goToSlide(index) {
+    if (this.isAnimating || index === this.currentIndex) return;
     
-    // Auto-play (opcional)
-    let autoPlayInterval;
+    this.isAnimating = true;
     
-    function startAutoPlay() {
-        autoPlayInterval = setInterval(nextSlide, 5000); // Muda a cada 5 segundos
+    // Atualizar índice
+    this.currentIndex = index;
+    
+    // Animar transição
+    this.animateTransition();
+    
+    // Resetar auto-play
+    this.resetAutoPlay();
+    
+    // Habilitar animação após um delay
+    setTimeout(() => {
+      this.isAnimating = false;
+    }, 600);
+  }
+
+  nextSlide() {
+    const nextIndex = (this.currentIndex + 1) % this.totalSlides;
+    this.goToSlide(nextIndex);
+  }
+
+  prevSlide() {
+    const prevIndex = (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
+    this.goToSlide(prevIndex);
+  }
+
+  animateTransition() {
+    // Remover classe active de todos os slides
+    const slides = this.carouselTrack.querySelectorAll('.phone-slide');
+    slides.forEach(slide => slide.classList.remove('active'));
+    
+    // Adicionar classe active ao slide atual
+    const currentSlide = slides[this.currentIndex];
+    if (currentSlide) {
+      currentSlide.classList.add('active');
+      
+      // Atualizar posição do track
+      this.carouselTrack.style.transform = `translateX(-${this.currentIndex * 100}%)`;
+    }
+  }
+
+  updateCarousel() {
+    // Atualizar posição inicial
+    this.carouselTrack.style.transform = `translateX(-${this.currentIndex * 100}%)`;
+  }
+
+  startAutoPlay() {
+    if (CONFIG.carousel.autoPlay) {
+      this.autoPlayInterval = setInterval(() => this.nextSlide(), CONFIG.carousel.interval);
+    }
+  }
+
+  stopAutoPlay() {
+    if (this.autoPlayInterval) {
+      clearInterval(this.autoPlayInterval);
+      this.autoPlayInterval = null;
+    }
+  }
+
+  resetAutoPlay() {
+    this.stopAutoPlay();
+    this.startAutoPlay();
+  }
+
+  setupEventListeners() {
+    // Botões de navegação
+    if (this.prevBtn) {
+      this.prevBtn.addEventListener('click', () => {
+        this.prevSlide();
+        this.resetAutoPlay();
+      });
     }
     
-    function stopAutoPlay() {
-        clearInterval(autoPlayInterval);
+    if (this.nextBtn) {
+      this.nextBtn.addEventListener('click', () => {
+        this.nextSlide();
+        this.resetAutoPlay();
+      });
     }
     
-    // Inicia auto-play
-    startAutoPlay();
-    
-    // Pausa auto-play quando o mouse está sobre o carousel
-    carousel.addEventListener('mouseenter', stopAutoPlay);
-    carousel.addEventListener('mouseleave', startAutoPlay);
+    // Pausa auto-play ao interagir
+    const carouselArea = document.querySelector('.phone-carousel-container');
+    if (carouselArea) {
+      carouselArea.addEventListener('mouseenter', () => this.stopAutoPlay());
+      carouselArea.addEventListener('mouseleave', () => this.startAutoPlay());
+    }
     
     // Navegação por teclado
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') {
-            prevSlide();
-        } else if (e.key === 'ArrowRight') {
-            nextSlide();
-        }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        this.prevSlide();
+        this.resetAutoPlay();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        this.nextSlide();
+        this.resetAutoPlay();
+      }
     });
-}
-
-// ====================
-// SCROLL SUAVE
-// ====================
-
-function initializeSmoothScroll() {
-    const navLinks = document.querySelectorAll('.nav-links a, .footer-column a[href^="#"]');
     
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            
-            // Só aplica scroll suave para links âncora
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                
-                const targetId = href.substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    const offsetTop = targetElement.offsetTop - 80; // Considera o header fixo
-                    
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-            // Links externos (WhatsApp, etc.) abrem normalmente
-        });
-    });
-}
+    // Swipe em dispositivos touch
+    this.setupTouchEvents();
+  }
 
-// ====================
-// HEADER SCROLL EFFECT
-// ====================
+  setupTouchEvents() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const swipeThreshold = 50;
 
-function initializeHeaderScroll() {
-    const header = document.querySelector('header');
-    let lastScrollY = window.scrollY;
-    
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 100) {
-            header.style.background = 'var(--header-bg)';
-            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+    this.carouselTrack.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      this.stopAutoPlay();
+    }, { passive: true });
+
+    this.carouselTrack.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          this.nextSlide(); // Swipe para esquerda
         } else {
-            header.style.background = 'var(--header-bg)';
-            header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+          this.prevSlide(); // Swipe para direita
         }
-        
-        lastScrollY = window.scrollY;
-    });
+      }
+      this.startAutoPlay();
+    }, { passive: true });
+  }
 }
 
 // ====================
-// ANIMAÇÃO DE REVEAL
+// ANIMAÇÕES DE SCROLL
 // ====================
-
-function initializeScrollReveal() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+class ScrollAnimations {
+  constructor() {
+    this.observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
     };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // Observa elementos para animação
-    const elementsToAnimate = document.querySelectorAll('.benefit-card, .feature-card, .step, .testimonial-card, .pricing-card');
-    
-    elementsToAnimate.forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(30px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(element);
+    this.init();
+  }
+
+  init() {
+    this.setupIntersectionObserver();
+    this.setupHeaderScroll();
+  }
+
+  setupIntersectionObserver() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, this.observerOptions);
+
+    // Elementos para animar (incluindo os novos da seção CTA)
+    const elements = document.querySelectorAll(
+      '.modern-card, .feature-item, .timeline-item, .benefit-card, .feature-group, .cta-card, .cta-feature'
+    );
+    elements.forEach(element => {
+      element.classList.add('animate-on-scroll');
+      observer.observe(element);
     });
+  }
+
+  setupHeaderScroll() {
+    const header = document.querySelector('.modern-header');
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > 100) {
+        header.style.backdropFilter = 'blur(20px)';
+        header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+      } else {
+        header.style.backdropFilter = 'blur(12px)';
+        header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+      }
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        header.style.transform = 'translateY(-100%)';
+      } else {
+        header.style.transform = 'translateY(0)';
+      }
+
+      lastScrollY = currentScrollY;
+    });
+  }
 }
 
 // ====================
-// ALTERNÂNCIA DE TEMA
+// TOGGLE DE PLANOS
 // ====================
+class PricingToggle {
+  constructor() {
+    this.toggle = document.querySelector('#pricing-toggle');
+    this.monthlyPrices = [97, 197, 297, 497];
+    this.annualPrices = this.monthlyPrices.map(price => Math.floor(price * 10 * 0.8));
+    this.init();
+  }
 
-function initializeThemeToggle() {
-    const themeToggle = document.querySelector('.theme-toggle');
-    
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeToggleIcon(newTheme);
-        });
+  init() {
+    if (this.toggle) {
+      this.toggle.addEventListener('change', () => this.updatePrices());
     }
+  }
+
+  updatePrices() {
+    const isAnnual = this.toggle.checked;
+    const prices = isAnnual ? this.annualPrices : this.monthlyPrices;
+    const period = isAnnual ? '/ano' : '/mês';
+    
+    const priceElements = document.querySelectorAll('.price .amount');
+    const periodElements = document.querySelectorAll('.price .period');
+    
+    priceElements.forEach((element, index) => {
+      if (prices[index]) {
+        element.textContent = prices[index];
+      }
+    });
+    
+    periodElements.forEach(element => {
+      element.textContent = period;
+    });
+  }
 }
 
 // ====================
-// FORMULÁRIO DE CONTATO (se houver)
+// FORMULÁRIO DE CONTATO
 // ====================
+class ContactForm {
+  constructor() {
+    this.forms = document.querySelectorAll('form');
+    this.init();
+  }
 
-function initializeContactForm() {
-    const contactForm = document.getElementById('contact-form');
+  init() {
+    this.forms.forEach(form => {
+      form.addEventListener('submit', (e) => this.handleSubmit(e, form));
+    });
+  }
+
+  handleSubmit(e, form) {
+    e.preventDefault();
     
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Aqui você pode adicionar a lógica para enviar o formulário
-            // Por exemplo, usando Fetch API ou redirecionando para WhatsApp
-            
-            const formData = new FormData(this);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const message = formData.get('message');
-            
-            // Exemplo: Redirecionar para WhatsApp com a mensagem
-            const whatsappMessage = `Olá! Meu nome é ${name}. ${message}`;
-            const whatsappUrl = `https://wa.me/5516988100103?text=${encodeURIComponent(whatsappMessage)}`;
-            
-            window.open(whatsappUrl, '_blank');
-        });
-    }
-}
-
-// ====================
-// CONTADORES (se necessário)
-// ====================
-
-function initializeCounters() {
-    const counters = document.querySelectorAll('.counter');
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
     
-    if (counters.length > 0) {
-        const observerOptions = {
-            threshold: 0.5
-        };
-        
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const counter = entry.target;
-                    const target = parseInt(counter.getAttribute('data-target'));
-                    const duration = 2000; // 2 segundos
-                    const step = target / (duration / 16); // 60fps
-                    let current = 0;
-                    
-                    const timer = setInterval(function() {
-                        current += step;
-                        if (current >= target) {
-                            counter.textContent = target;
-                            clearInterval(timer);
-                        } else {
-                            counter.textContent = Math.floor(current);
-                        }
-                    }, 16);
-                    
-                    observer.unobserve(counter);
-                }
-            });
-        }, observerOptions);
-        
-        counters.forEach(counter => {
-            observer.observe(counter);
-        });
+    console.log('Form data:', data);
+    
+    if (form.id === 'contact-form') {
+      const message = `Olá! Meu nome é ${data.name}. ${data.message}`;
+      const whatsappUrl = `https://wa.me/5516988100103?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
     }
+    
+    this.showSuccessMessage(form);
+  }
+
+  showSuccessMessage(form) {
+    const button = form.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    
+    button.innerHTML = '<i class="fas fa-check"></i> Enviado!';
+    button.disabled = true;
+    
+    setTimeout(() => {
+      button.innerHTML = originalText;
+      button.disabled = false;
+    }, 3000);
+  }
 }
 
 // ====================
 // INICIALIZAÇÃO GERAL
 // ====================
+class App {
+  constructor() {
+    this.modules = {};
+    this.init();
+  }
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Inicializa o tema (modo claro como padrão para novos usuários)
-    initializeTheme();
+  init() {
+    this.modules.theme = new ThemeManager();
+    this.modules.menu = new MobileMenu();
+    this.modules.phoneCarousel = new SimplePhoneCarousel();
+    this.modules.animations = new ScrollAnimations();
+    this.modules.pricing = new PricingToggle();
+    this.modules.contact = new ContactForm();
     
-    // Inicializa todas as funcionalidades
-    initializeMobileMenu();
-    initializeCarousel();
-    initializeSmoothScroll();
-    initializeHeaderScroll();
-    initializeScrollReveal();
-    initializeThemeToggle();
-    initializeContactForm();
-    initializeCounters();
+    this.setupSmoothScroll();
+    this.setupPerformance();
+    this.setupHeroAnimations();
+    this.setupCtaAnimations();
+    this.setupWhatsAppFloat();
     
     console.log('Salú - Sistema inicializado com sucesso!');
+  }
+
+setupWhatsAppFloat() {
+  // Adiciona efeito de pulse contínuo ao botão WhatsApp
+  const whatsappBtn = document.querySelector('.whatsapp-float');
+  if (whatsappBtn) {
+    setInterval(() => {
+      whatsappBtn.style.animation = 'none';
+      setTimeout(() => {
+        whatsappBtn.style.animation = 'pulse 2s infinite';
+      }, 10);
+    }, 4000);
+  }
+}
+
+  setupHeroAnimations() {
+    // Animação do telefone no hero (apenas em desktop)
+    const heroPhone = document.querySelector('.floating-phone');
+    if (heroPhone && window.innerWidth > 768) {
+      const animatePhone = () => {
+        const time = Date.now() / 1000;
+        const floatY = Math.sin(time) * 10;
+        const rotation = Math.sin(time * 0.5) * 2;
+        
+        heroPhone.style.transform = `translateY(${floatY}px) rotate(${rotation}deg)`;
+        requestAnimationFrame(animatePhone);
+      };
+      animatePhone();
+    }
+  }
+
+  setupCtaAnimations() {
+    // Animações específicas para a seção CTA
+    const ctaCards = document.querySelectorAll('.cta-card');
+    ctaCards.forEach((card, index) => {
+      card.style.animationDelay = `${index * 0.2}s`;
+    });
+  }
+
+  setupSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        
+        if (href === '#') return;
+        
+        e.preventDefault();
+        const target = document.querySelector(href);
+        
+        if (target) {
+          const offset = 80;
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  }
+
+  setupPerformance() {
+    // Lazy loading para imagens
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.dataset.src;
+            if (src) {
+              img.src = src;
+              img.classList.remove('lazy');
+            }
+            imageObserver.unobserve(img);
+          }
+        });
+      });
+      
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+      });
+    }
+    
+    // Preload de imagens importantes
+    this.preloadImages([
+      '/logo.png',
+      '/captura1.jpg',
+      '/captura2.jpg',
+      '/captura3.jpg'
+    ]);
+  }
+
+  preloadImages(imageUrls) {
+    imageUrls.forEach(url => {
+      const img = new Image();
+      img.src = url;
+    });
+  }
+}
+
+// ====================
+// INICIALIZAÇÃO DO APP
+// ====================
+document.addEventListener('DOMContentLoaded', () => {
+  // Remove a classe 'no-js' se necessário
+  document.documentElement.classList.remove('no-js');
+  
+  // Inicializa a aplicação
+  window.app = new App();
 });
+
+// ====================
+// FUNÇÃO PARA ROLAR PARA O TOPO
+// ====================
+function scrollToTop(e) {
+  if (e) e.preventDefault();
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
 
 // ====================
 // TRATAMENTO DE ERROS
 // ====================
-
-window.addEventListener('error', function(e) {
-    console.error('Erro detectado:', e.error);
+window.addEventListener('error', (e) => {
+  console.error('Erro detectado:', e.error);
 });
 
 // ====================
-// LOADING PERFORMANCE
+// UTILITÁRIOS ADICIONAIS
 // ====================
 
-// Preload de imagens importantes (opcional)
-function preloadImages() {
-    const images = [
-        '/logo.png',
-        '/favicon.png',
-        '/captura1.jpg',
-        '/captura2.jpg',
-        '/captura3.jpg',
-        '/captura4.jpg',
-        '/captura5.jpg',
-        '/captura6.jpg',
-        '/captura7.jpg'
-    ];
-    
-    images.forEach(src => {
-        const img = new Image();
-        img.src = src;
+// Adiciona classe quando a página carrega
+window.addEventListener('load', () => {
+  document.body.classList.add('loaded');
+});
+
+// Animação para elementos que aparecem no scroll
+function setupScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
     });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
 }
 
-// Chama o preload após o carregamento inicial
-window.addEventListener('load', preloadImages);
+// Inicializar animações de scroll quando a página carrega
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupScrollAnimations);
+} else {
+  setupScrollAnimations();
+}
+
+// Efeito de parallax suave (apenas em desktop)
+function setupParallax() {
+  if (window.innerWidth > 768) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const parallaxElements = document.querySelectorAll('.parallax');
+      
+      parallaxElements.forEach(element => {
+        const speed = element.dataset.speed || 0.5;
+        element.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    });
+  }
+}
+
+// Inicializar parallax
+setupParallax();
+
+// Re-inicializar parallax em redimensionamento
+window.addEventListener('resize', setupParallax);
+
+// Animações adicionais para a nova seção CTA
+function setupCtaHoverEffects() {
+  const ctaCards = document.querySelectorAll('.cta-card');
+  
+  ctaCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      const icon = card.querySelector('.cta-card-icon');
+      icon.style.transform = 'scale(1.1) rotate(5deg)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      const icon = card.querySelector('.cta-card-icon');
+      icon.style.transform = 'scale(1) rotate(0deg)';
+    });
+  });
+}
+
+// Inicializar efeitos de hover da CTA
+document.addEventListener('DOMContentLoaded', setupCtaHoverEffects);
