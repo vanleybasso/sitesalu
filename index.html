@@ -32,19 +32,17 @@
   <!-- ==================== -->
   <header class="modern-header">
     <div class="container header-container">
-      <!-- Logo com link para recarregar a página -->
-      <!-- Logo com link para rolar ao topo -->
-<div class="logo">
-  <a href="#" onclick="scrollToTop(event)">
-    <img src="/logo.png" alt="Logo Salú" />
-  </a>
-</div>
+      <div class="logo">
+        <a href="#" onclick="scrollToTop(event)">
+          <img src="/logo.png" alt="Logo Salú" />
+        </a>
+      </div>
       
-      <!-- Navegação principal -->
       <nav class="modern-nav">
         <ul class="nav-links">
           <li><a href="#app">Aplicativo</a></li>
           <li><a href="#features">Funcionalidades</a></li>
+          <li><a href="#clinical">Ferramentas</a></li>
           <li><a href="#benefits">Benefícios</a></li>
           <li><a href="#process">Implementação</a></li>
           <li><a href="#testimonials">Depoimentos</a></li>
@@ -53,7 +51,6 @@
         </ul>
       </nav>
       
-      <!-- Botão do menu mobile -->
       <div class="menu-toggle">
         <div class="hamburger">
           <span></span>
@@ -100,7 +97,6 @@
           </div>
         </div>
       </div>
-      <!-- Hero visual - será escondido em mobile -->
       <div class="hero-visual hide-on-mobile">
         <div class="floating-phone">
           <div class="phone-screen">
@@ -123,19 +119,16 @@
       
       <div class="app-phone-carousel">
         <div class="phone-carousel-container">
-          <!-- Controle esquerdo -->
           <button class="phone-carousel-btn prev-btn" aria-label="Slide anterior">
             <i class="fas fa-chevron-left"></i>
           </button>
           
-          <!-- Container central com o telefone -->
           <div class="phone-carousel-center">
             <div class="phone-carousel-track">
               <!-- Slides serão inseridos pelo JavaScript -->
             </div>
           </div>
           
-          <!-- Controle direito -->
           <button class="phone-carousel-btn next-btn" aria-label="Próximo slide">
             <i class="fas fa-chevron-right"></i>
           </button>
@@ -322,6 +315,78 @@
                 <i class="fas fa-check-circle"></i>
                 <span>Backup automático e seguro</span>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== -->
+  <!-- SEÇÃO DE DESTAQUES - ANÁLISE CLÍNICA (MANTIDA) -->
+  <!-- ==================== -->
+  <section id="clinical" class="modern-clinical">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Ferramentas Clínicas Avançadas</h2>
+        <p class="section-subtitle">Registros detalhados que potencializam o diagnóstico e acompanhamento</p>
+      </div>
+      
+      <div class="clinical-grid">
+        <div class="clinical-card modern-card">
+          <div class="clinical-icon">
+            <i class="fas fa-stethoscope"></i>
+          </div>
+          <h3>Anamnese Completa</h3>
+          <div class="clinical-features">
+            <div class="clinical-feature">
+              <i class="fas fa-baby-carriage"></i>
+              <span>Gestante e Nascimento</span>
+              <small>Histórico gestacional, tipo de parto, intercorrências</small>
+            </div>
+            <div class="clinical-feature">
+              <i class="fas fa-child"></i>
+              <span>Desenvolvimento Neuropsicomotor</span>
+              <small>Marcos do desenvolvimento: sustentar cabeça, sentar, andar</small>
+            </div>
+            <div class="clinical-feature">
+              <i class="fas fa-heartbeat"></i>
+              <span>Histórico de Saúde</span>
+              <small>Doenças, alergias, cirurgias, medicamentos</small>
+            </div>
+            <div class="clinical-feature">
+              <i class="fas fa-smile"></i>
+              <span>Comportamento e Rotina</span>
+              <small>Sono, alimentação, socialização, brincadeiras</small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="clinical-card modern-card">
+          <div class="clinical-icon">
+            <i class="fas fa-school"></i>
+          </div>
+          <h3>Observação Escolar</h3>
+          <div class="clinical-features">
+            <div class="clinical-feature">
+              <i class="fas fa-book-open"></i>
+              <span>Desempenho Acadêmico</span>
+              <small>Leitura, escrita, matemática, atenção, memória</small>
+            </div>
+            <div class="clinical-feature">
+              <i class="fas fa-users"></i>
+              <span>Comportamento na Escola</span>
+              <small>Relacionamento com colegas e professores</small>
+            </div>
+            <div class="clinical-feature">
+              <i class="fas fa-chalkboard"></i>
+              <span>Observações Pedagógicas</span>
+              <small>Feedback dos professores e avaliações</small>
+            </div>
+            <div class="clinical-feature">
+              <i class="fas fa-file-signature"></i>
+              <span>Parecer Profissional</span>
+              <small>Impressões clínicas e recomendações escolares</small>
             </div>
           </div>
         </div>
@@ -743,6 +808,7 @@
               <li><a href="#benefits">Benefícios</a></li>
               <li><a href="#app">Aplicativo</a></li>
               <li><a href="#features">Funcionalidades</a></li>
+              <li><a href="#clinical">Ferramentas</a></li>
               <li><a href="#process">Implementação</a></li>
               <li><a href="#pricing">Planos</a></li>
             </ul>
@@ -774,7 +840,6 @@
     </div>
   </footer>
 
-  <!-- JavaScript -->
   <script src="/scripts/scripts.js"></script>
 </body>
-</html>
+</html

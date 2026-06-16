@@ -323,9 +323,9 @@ class ScrollAnimations {
       });
     }, this.observerOptions);
 
-    // Elementos para animar (incluindo os novos da seção CTA)
+    // Elementos para animar (incluindo os novos da seção clínica)
     const elements = document.querySelectorAll(
-      '.modern-card, .feature-item, .timeline-item, .benefit-card, .feature-group, .cta-card, .cta-feature'
+      '.modern-card, .feature-item, .timeline-item, .benefit-card, .feature-group, .cta-card, .cta-feature, .clinical-card, .clinical-feature'
     );
     elements.forEach(element => {
       element.classList.add('animate-on-scroll');

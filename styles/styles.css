@@ -1905,3 +1905,137 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ==================== */
+/* SEÇÃO CLÍNICA - ANANMESE E OBSERVAÇÃO ESCOLAR */
+/* ==================== */
+.modern-clinical {
+  padding: var(--space-3xl) 0;
+  background: linear-gradient(180deg, var(--gray-50) 0%, var(--bg-color) 100%);
+  position: relative;
+}
+
+.clinical-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.clinical-card {
+  padding: var(--space-2xl);
+  height: 100%;
+  transition: all var(--transition-normal);
+  background: var(--card-bg);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-lg);
+}
+
+.clinical-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+}
+
+.clinical-icon {
+  width: 70px;
+  height: 70px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-xl);
+  color: var(--white);
+  font-size: 2rem;
+}
+
+.clinical-card:first-child .clinical-icon {
+  background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+}
+
+.clinical-card:last-child .clinical-icon {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+}
+
+.clinical-card h3 {
+  font-size: 1.75rem;
+  margin-bottom: var(--space-xl);
+  color: var(--text-color);
+}
+
+.clinical-features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.clinical-feature {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  background: var(--gray-50);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.clinical-feature:hover {
+  transform: translateX(8px);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.clinical-feature i {
+  font-size: 1.25rem;
+  color: var(--primary-color);
+  margin-bottom: var(--space-xs);
+}
+
+.clinical-feature span {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.clinical-feature small {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Responsividade da seção clínica */
+@media (max-width: 768px) {
+  .clinical-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  
+  .clinical-card {
+    padding: var(--space-xl);
+  }
+  
+  .clinical-card h3 {
+    font-size: 1.5rem;
+  }
+  
+  .clinical-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .clinical-feature {
+    padding: var(--space-sm);
+  }
+  
+  .clinical-feature span {
+    font-size: 0.875rem;
+  }
+  
+  .clinical-feature small {
+    font-size: 0.75rem;
+  }
+}
